@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes, Navigate } from "react-router";
 import Navbar from "./components/Navbar";
 import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
@@ -47,6 +47,7 @@ function App() {
         <Route path="/appointments" element={<ProtectedRoute><AppointmentsPage /></ProtectedRoute>} />
         <Route path="/patients" element={<ProtectedRoute><PatientsPage /></ProtectedRoute>} />
         <Route path="/patients/:id" element={<ProtectedRoute><PatientProfilePage /></ProtectedRoute>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );
