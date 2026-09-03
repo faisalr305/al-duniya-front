@@ -1,5 +1,4 @@
 import { Route, Routes, Navigate } from "react-router";
-import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/Navbar";
 import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
@@ -38,20 +37,18 @@ function KawaiiDecor() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <>
-        <KawaiiDecor />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/appointments" element={<AppointmentsPage />} />
-          <Route path="/patients" element={<PatientsPage />} />
-          <Route path="/patients/:id" element={<PatientProfilePage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </>
-    </ThemeProvider>
+    <>
+      <KawaiiDecor />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/appointments" element={<AppointmentsPage />} />
+        <Route path="/patients" element={<PatientsPage />} />
+        <Route path="/patients/:id" element={<PatientProfilePage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 }
 
