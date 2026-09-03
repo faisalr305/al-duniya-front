@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router";
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
 const navItems = [
@@ -10,7 +9,6 @@ const navItems = [
 ];
 
 function Sidebar() {
-  const { logout, user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
@@ -61,15 +59,6 @@ function Sidebar() {
             aria-label="Toggle dark mode"
           >
             {theme === "dark" ? "☀️" : "🌙"}
-          </button>
-          <div className="sidebar-user">
-            <span className="sidebar-avatar">
-              {user?.username?.[0]?.toUpperCase()}
-            </span>
-            <span className="sidebar-username">{user?.username}</span>
-          </div>
-          <button className="sidebar-logout" onClick={logout} title="Sign Out">
-            ↩
           </button>
         </div>
       </aside>

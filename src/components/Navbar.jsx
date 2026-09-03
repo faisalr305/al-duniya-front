@@ -1,9 +1,7 @@
 import { Link } from 'react-router'
-import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
 
 function Navbar() {
-  const { logout, user } = useAuth()
   const { theme, toggleTheme } = useTheme()
 
   return (
@@ -43,16 +41,6 @@ function Navbar() {
         >
           {theme === "dark" ? "☀️" : "🌙"}
         </button>
-
-        {user && (
-          <div className="navbar-account">
-            <span className="navbar-avatar">{user?.username?.[0]?.toUpperCase()}</span>
-            <span className="navbar-username">{user?.username}</span>
-            <button type="button" className="navbar-logout" onClick={logout}>
-              Log Out
-            </button>
-          </div>
-        )}
       </div>
     </header>
   )

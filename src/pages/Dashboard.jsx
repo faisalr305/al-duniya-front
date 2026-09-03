@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { getDashboard, getAppointmentsByDate, updateAppointment } from '../services/clinicService';
 import { format } from 'date-fns';
 import ClinicCalendar from '../components/ClinicCalendar';
@@ -38,7 +37,6 @@ function Section({ appointments, onStatus, onPayment, onEdit, emptyMsg }) {
 }
 
 function Dashboard() {
-  const { user } = useAuth();
   const [dashboard, setDashboard] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [dayAppointments, setDayAppointments] = useState([]);
@@ -116,7 +114,7 @@ function Dashboard() {
         <div className="page-header">
           <div>
             <h1 className="page-title">Dashboard</h1>
-            <p className="page-sub">Welcome back, {user?.username}</p>
+            <p className="page-sub">Welcome to your clinic dashboard</p>
           </div>
           <button className="btn-primary" onClick={() => { setEditAppt(null); setShowForm(true); }}>
             + New Appointment
