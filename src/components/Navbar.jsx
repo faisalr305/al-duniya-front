@@ -29,18 +29,9 @@ function Navbar() {
         </Link>
 
         <nav className="navbar-links">
-          {user ? (
-            <>
-              <Link to="/dashboard" className="navbar-link">Dashboard</Link>
-              <Link to="/appointments" className="navbar-link">Appointments</Link>
-              <Link to="/patients" className="navbar-link">Patients</Link>
-            </>
-          ) : (
-            <>
-              <Link to="/sign-in" className="navbar-link">Sign In</Link>
-              <Link to="/sign-up" className="navbar-link navbar-link-cta">Sign Up</Link>
-            </>
-          )}
+          <Link to="/dashboard" className="navbar-link">Dashboard</Link>
+          <Link to="/appointments" className="navbar-link">Appointments</Link>
+          <Link to="/patients" className="navbar-link">Patients</Link>
         </nav>
 
         <button

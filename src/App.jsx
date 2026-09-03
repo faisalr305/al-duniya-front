@@ -1,8 +1,6 @@
-import { Route, Routes, useLocation } from "react-router";
+import { Route, Routes } from "react-router";
 import Navbar from "./components/Navbar";
-import SignupPage from "./pages/SignupPage";
 import Homepage from "./pages/Homepage";
-import SignInPage from "./pages/SigninPage";
 import Dashboard from "./pages/Dashboard";
 import AppointmentsPage from "./pages/AppointmentsPage";
 import PatientProfilePage from "./pages/PatientProfilePage";
@@ -39,17 +37,12 @@ function KawaiiDecor() {
 }
 
 function App() {
-  const { pathname } = useLocation();
-  const showNavbar = ["/", "/sign-up", "/sign-in"].includes(pathname);
-
   return (
     <>
       <KawaiiDecor />
-      {showNavbar && <Navbar />}
+      <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/sign-up" element={<SignupPage />} />
-        <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/appointments" element={<ProtectedRoute><AppointmentsPage /></ProtectedRoute>} />
         <Route path="/patients" element={<ProtectedRoute><PatientsPage /></ProtectedRoute>} />
