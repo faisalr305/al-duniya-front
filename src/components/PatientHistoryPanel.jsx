@@ -7,6 +7,7 @@ function PatientHistoryPanel({ patientId }) {
 
   useEffect(() => {
     if (!patientId) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     getPatient(patientId)
       .then(setData)
@@ -20,13 +21,7 @@ function PatientHistoryPanel({ patientId }) {
     );
   if (!data) return null;
 
-  const {
-    patient,
-    appointments,
-    totals,
-    latestAppointment,
-    upcomingAppointment,
-  } = data;
+  const { appointments, totals } = data;
 
   return (
     <div className="history-panel">

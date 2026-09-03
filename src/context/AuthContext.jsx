@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { getCurrentUser, logout } from "../services/authService";
 
-const AuthContext = createContext();
+const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -19,10 +19,10 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        const user = await getCurrentUser();
+        const currentUser = await getCurrentUser();
 
-        setUser(user);
-      } catch (error) {
+        setUser(currentUser);
+      } catch {
         localStorage.removeItem("token");
 
         setUser(null);
@@ -54,6 +54,7 @@ export function AuthProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   return useContext(AuthContext);
 }

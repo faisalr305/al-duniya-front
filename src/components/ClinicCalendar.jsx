@@ -37,7 +37,7 @@ function eventStyleGetter(event) {
 
 const calendarFormats = {
   timeGutterFormat: "h:mm a",
-  eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
+  eventTimeRangeFormat: ({ start }, culture, localizer) =>
     localizer.format(start, "h:mm a"),
   agendaTimeFormat: "h:mm a",
   agendaTimeRangeFormat: ({ start }, culture, localizer) =>
@@ -47,7 +47,7 @@ const calendarFormats = {
     `${localizer.format(start, "MMM d")} – ${localizer.format(end, "MMM d, yyyy")}`,
 };
 
-function ClinicCalendar({ onDateSelect, selectedDate }) {
+function ClinicCalendar({ onDateSelect }) {
   const [events, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -82,6 +82,7 @@ function ClinicCalendar({ onDateSelect, selectedDate }) {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadRange(currentDate);
   }, [currentDate]);
 

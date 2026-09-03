@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const ThemeContext = createContext();
+const ThemeContext = createContext(undefined);
 
 const THEME_KEY = "clinic-theme";
 
@@ -9,10 +9,13 @@ function getInitialTheme() {
   try {
     const stored = localStorage.getItem(THEME_KEY);
     if (stored === "light" || stored === "dark") return stored;
-  } catch (_) {}
+  } catch {
+    // localStorage may be unavailable (private mode, etc.) — fall through
+  }
   return window.matchMedia?.("(prefers-color-scheme: dark)").matches
     ? "dark"
-    : "light";}
+    : "light";
+}
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(getInitialTheme);
@@ -21,7 +24,9 @@ export function ThemeProvider({ children }) {
     document.documentElement.setAttribute("data-theme", theme);
     try {
       localStorage.setItem(THEME_KEY, theme);
-    } catch (_) {}
+    } catch {
+      // localStorage may be unavailable — ignore
+    }
   }, [theme]);
 
   const toggleTheme = () =>
@@ -34,6 +39,7 @@ export function ThemeProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTheme() {
   return useContext(ThemeContext);
 }

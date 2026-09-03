@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PatientSearch from "./PatientSearch";
 import PatientHistoryPanel from "./PatientHistoryPanel";
 import {
@@ -9,15 +9,23 @@ import { to24Hour } from "../utils/format";
 
 const STATUSES = ["Pending", "Confirmed", "Completed", "Cancelled", "No Show"];
 
-function AppointmentForm({
-  initialDate,
-  onSaved,
-  onClose,
-  existingAppointment,
-}) {
-  const editing = !!existingAppointment;
-  const [selectedPatient, setSelectedPatient] = useState(null);
-  const [form, setForm] = useState({
+function buildInitialForm(existingAppointment, initialDate) {
+  if (existingAppointment) {
+    const a = existingAppointment;
+    return {
+      patientName: a.patient?.name || "",
+      patientPhone: a.patient?.phone || "",
+      date: a.date ? a.date.slice(0, 10) : "",
+      time: a.time || "",
+      doctor: a.doctor || "",
+      service: a.service || "",
+      status: a.status || "Pending",
+      totalBill: a.totalBill || "",
+      amountPaid: a.amountPaid || "",
+      notes: a.notes || "",
+    };
+  }
+  return {
     patientName: "",
     patientPhone: "",
     date: initialDate || "",
@@ -28,7 +36,22 @@ function AppointmentForm({
     totalBill: "",
     amountPaid: "",
     notes: "",
-  });
+  };
+}
+
+function AppointmentForm({
+  initialDate,
+  onSaved,
+  onClose,
+  existingAppointment,
+}) {
+  const editing = !!existingAppointment;
+  const [selectedPatient, setSelectedPatient] = useState(
+    existingAppointment?.patient || null,
+  );
+  const [form, setForm] = useState(() =>
+    buildInitialForm(existingAppointment, initialDate),
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -58,25 +81,6 @@ function AppointmentForm({
       time: to24Hour(next.hour12, next.minute, next.period),
     }));
   };
-
-  useEffect(() => {
-    if (existingAppointment) {
-      const a = existingAppointment;
-      setSelectedPatient(a.patient);
-      setForm({
-        patientName: a.patient?.name || "",
-        patientPhone: a.patient?.phone || "",
-        date: a.date ? a.date.slice(0, 10) : "",
-        time: a.time || "",
-        doctor: a.doctor || "",
-        service: a.service || "",
-        status: a.status || "Pending",
-        totalBill: a.totalBill || "",
-        amountPaid: a.amountPaid || "",
-        notes: a.notes || "",
-      });
-    }
-  }, [existingAppointment]);
 
   const set = (field) => (e) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));

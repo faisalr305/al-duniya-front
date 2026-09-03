@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { searchPatients, getPatient } from "../services/clinicService";
+import { searchPatients } from "../services/clinicService";
 
 function PatientSearch({ onSelect, selectedPatient, onClear }) {
   const [query, setQuery] = useState("");
@@ -19,6 +19,7 @@ function PatientSearch({ onSelect, selectedPatient, onClear }) {
 
   useEffect(() => {
     if (query.length < 2) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResults([]);
       return;
     }

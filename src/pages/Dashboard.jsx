@@ -18,7 +18,7 @@ function StatCard({ label, value, sub, color }) {
   );
 }
 
-function Section({ title, appointments, onStatus, onPayment, onEdit, emptyMsg }) {
+function Section({ appointments, onStatus, onPayment, onEdit, emptyMsg }) {
   if (!appointments?.length) return (
     <div className="section-empty">{emptyMsg || 'No appointments.'}</div>
   );
@@ -59,14 +59,17 @@ function Dashboard() {
     }
   };
 
-  useEffect(() => { loadDashboard(); }, []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadDashboard();
+  }, []);
 
   const handleDateSelect = async (dateStr) => {
     setSelectedDate(dateStr);
     try {
       const data = await getAppointmentsByDate(dateStr);
       setDayAppointments(data);
-    } catch (err) {
+    } catch {
       setDayAppointments([]);
     }
   };
@@ -79,7 +82,7 @@ function Dashboard() {
     } catch (err) { console.error(err); }
   };
 
-  const handleSaved = (result) => {
+  const handleSaved = () => {
     setShowForm(false);
     setEditAppt(null);
     if (selectedDate) handleDateSelect(selectedDate);
@@ -138,7 +141,7 @@ function Dashboard() {
             <div className="section-header">
               <h2 className="section-title">📅 Calendar</h2>
             </div>
-            <ClinicCalendar onDateSelect={handleDateSelect} selectedDate={selectedDate} />
+            <ClinicCalendar onDateSelect={handleDateSelect} />
 
             {/* Day View */}
             {selectedDate && (

@@ -3,7 +3,6 @@ import {
   getAllAppointments,
   updateAppointment,
 } from "../services/clinicService";
-import { getAllPatients } from "../services/clinicService";
 import AppointmentCard from "../components/AppointmentCard";
 import AppointmentForm from "../components/AppointmentForm";
 import PaymentModal from "../components/PaymentModal";
@@ -54,6 +53,7 @@ function AppointmentsPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
     load();
   }, [filters]);
 
