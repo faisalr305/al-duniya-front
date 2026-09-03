@@ -60,26 +60,37 @@ function AppointmentForm({
     Number(form.totalBill || 0) - Number(form.amountPaid || 0),
   );
 
-  // Break the stored 24-hour "HH:mm" value into 12-hour picker parts.
-  // e.g. "14:30" → { hour12: "2", minute: "30", period: "PM" }
-  const timeParts = (() => {
-    if (!form.time) return { hour12: "", minute: "", period: "" };
-    const [h, m] = form.time.split(":");
+  const [hour12, setHour12] = useState(() => {
+    if (!form.time) return "";
+    const [h] = form.time.split(":");
     const h24 = parseInt(h, 10);
-    if (Number.isNaN(h24)) return { hour12: "", minute: "", period: "" };
-    return {
-      hour12: String(h24 % 12 === 0 ? 12 : h24 % 12),
-      minute: m ? m.slice(0, 2) : "",
-      period: h24 >= 12 ? "PM" : "AM",
-    };
-  })();
+    if (Number.isNaN(h24)) return "";
+    return String(h24 % 12 === 0 ? 12 : h24 % 12);
+  });
+  const [minute, setMinute] = useState(() => {
+    if (!form.time) return "";
+    const [, m] = form.time.split(":");
+    return m ? m.slice(0, 2) : "";
+  });
+  const [period, setPeriod] = useState(() => {
+    if (!form.time) return "";
+    const [h] = form.time.split(":");
+    const h24 = parseInt(h, 10);
+    return Number.isNaN(h24) ? "" : h24 >= 12 ? "PM" : "AM";
+  });
 
-  const setTime = (part) => (e) => {
-    const next = { ...timeParts, [part]: e.target.value };
-    setForm((f) => ({
-      ...f,
-      time: to24Hour(next.hour12, next.minute, next.period),
-    }));
+  const syncTimeToForm = (h, m, p) => {
+    if (h && m && p) {
+      const parsedHour = parseInt(h, 10);
+      let hours = parsedHour % 12;
+      if (p === "PM") hours += 12;
+      setForm((f) => ({
+        ...f,
+        time: `${String(hours).padStart(2, "0")}:${m}`,
+      }));
+    } else {
+      setForm((f) => ({ ...f, time: "" }));
+    }
   };
 
   const set = (field) => (e) =>
