@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   getAllAppointments,
   updateAppointment,
@@ -33,7 +33,7 @@ function AppointmentsPage() {
   const [payAppt, setPayAppt] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     try {
       const params = {};
@@ -50,12 +50,12 @@ function AppointmentsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
-  }, [filters]);
+  }, [load]);
 
   const setFilter = (key) => (e) =>
     setFilters((f) => ({ ...f, [key]: e.target.value }));

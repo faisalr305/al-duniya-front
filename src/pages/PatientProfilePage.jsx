@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router";
 import { getPatient } from "../services/clinicService";
 import AppointmentCard from "../components/AppointmentCard";
@@ -15,7 +15,7 @@ function PatientProfilePage() {
   const [editAppt, setEditAppt] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     try {
       setData(await getPatient(id));
@@ -24,12 +24,12 @@ function PatientProfilePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
-  }, [id]);
+  }, [load]);
 
   const handlePaymentAdded = (updatedAppt) => {
     setData((prev) => ({

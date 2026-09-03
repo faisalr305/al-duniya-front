@@ -5,7 +5,6 @@ import {
   createAppointment,
   updateAppointment,
 } from "../services/clinicService";
-import { to24Hour } from "../utils/format";
 
 const STATUSES = ["Pending", "Confirmed", "Completed", "Cancelled", "No Show"];
 
