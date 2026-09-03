@@ -205,8 +205,11 @@ function AppointmentForm({
                 <div className="time-picker">
                   <select
                     className="form-input"
-                    value={timeParts.hour12}
-                    onChange={setTime("hour12")}
+                    value={hour12}
+                    onChange={(e) => {
+                      setHour12(e.target.value);
+                      syncTimeToForm(e.target.value, minute, period);
+                    }}
                     aria-label="Hour"
                   >
                     <option value="">Hour</option>
@@ -218,8 +221,11 @@ function AppointmentForm({
                   </select>
                   <select
                     className="form-input"
-                    value={timeParts.minute}
-                    onChange={setTime("minute")}
+                    value={minute}
+                    onChange={(e) => {
+                      setMinute(e.target.value);
+                      syncTimeToForm(hour12, e.target.value, period);
+                    }}
                     aria-label="Minute"
                   >
                     <option value="">Min</option>
@@ -234,8 +240,11 @@ function AppointmentForm({
                   </select>
                   <select
                     className="form-input"
-                    value={timeParts.period}
-                    onChange={setTime("period")}
+                    value={period}
+                    onChange={(e) => {
+                      setPeriod(e.target.value);
+                      syncTimeToForm(hour12, minute, e.target.value);
+                    }}
                     aria-label="AM or PM"
                   >
                     <option value="">AM/PM</option>
