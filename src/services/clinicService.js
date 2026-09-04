@@ -13,6 +13,8 @@ export const createPatient = (data) =>
   api.post("/api/patients", data).then((r) => r.data);
 export const updatePatient = (id, data) =>
   api.put(`/api/patients/${id}`, data).then((r) => r.data);
+export const deletePatient = (id) =>
+  api.delete(`/api/patients/${id}`).then((r) => r.data);
 
 // ── Appointments ──────────────────────────────────────────────
 export const getDashboard = () =>

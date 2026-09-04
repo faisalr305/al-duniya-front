@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import { getAllPatients } from "../services/clinicService";
+import { deletePatient, getAllPatients } from "../services/clinicService";
 import Sidebar from "../components/Sidebar";
 
 function PatientsPage() {
@@ -20,6 +20,22 @@ function PatientsPage() {
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.phone.includes(search),
   );
+
+  const handleDelete = async (patient) => {
+    if (
+      !window.confirm(
+        `Delete patient "${patient.name}"? Their appointments and payment history will be kept.`,
+      )
+    )
+      return;
+    try {
+      await deletePatient(patient._id);
+      setPatients((prev) => prev.filter((p) => p._id !== patient._id));
+    } catch (err) {
+      console.error(err);
+      alert("Could not delete patient. " + (err.response?.data?.message || err.message));
+    }
+  };
 
   return (
     <div className="app-layout">
@@ -48,20 +64,30 @@ function PatientsPage() {
 
         <div className="patients-grid">
           {filtered.map((p) => (
-            <Link
-              key={p._id}
-              to={`/patients/${p._id}`}
-              className="patient-card"
-            >
-              <div className="patient-card-avatar">
-                {p.name[0].toUpperCase()}
-              </div>
-              <div className="patient-card-info">
-                <p className="patient-card-name">{p.name}</p>
-                <p className="patient-card-phone">{p.phone}</p>
-                {p.email && <p className="patient-card-email">{p.email}</p>}
-              </div>
-            </Link>
+            <div className="patient-card-wrap" key={p._id}>
+              <Link
+                to={`/patients/${p._id}`}
+                className="patient-card"
+              >
+                <div className="patient-card-avatar">
+                  {p.name[0].toUpperCase()}
+                </div>
+                <div className="patient-card-info">
+                  <p className="patient-card-name">{p.name}</p>
+                  <p className="patient-card-phone">{p.phone}</p>
+                  {p.email && <p className="patient-card-email">{p.email}</p>}
+                </div>
+              </Link>
+              <button
+                type="button"
+                className="patient-card-delete"
+                title={`Delete ${p.name}`}
+                aria-label={`Delete ${p.name}`}
+                onClick={() => handleDelete(p)}
+              >
+                🗑
+              </button>
+            </div>
           ))}
         </div>
       </main>

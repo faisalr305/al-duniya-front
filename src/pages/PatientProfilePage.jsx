@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router";
-import { getPatient } from "../services/clinicService";
+import { useParams, Link, useNavigate } from "react-router";
+import { deletePatient, getPatient } from "../services/clinicService";
 import AppointmentCard from "../components/AppointmentCard";
 import PaymentModal from "../components/PaymentModal";
 import AppointmentForm from "../components/AppointmentForm";
@@ -30,6 +30,24 @@ function PatientProfilePage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, [load]);
+
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (
+      !window.confirm(
+        `Delete patient "${data?.patient?.name || "this patient"}"? Their appointments and payment history will be kept.`,
+      )
+    )
+      return;
+    try {
+      await deletePatient(id);
+      navigate("/patients");
+    } catch (err) {
+      console.error(err);
+      alert("Could not delete patient. " + (err.response?.data?.message || err.message));
+    }
+  };
 
   const handlePaymentAdded = (updatedAppt) => {
     setData((prev) => ({
@@ -85,15 +103,20 @@ function PatientProfilePage() {
               {patient.email ? ` · ${patient.email}` : ""}
             </p>
           </div>
-          <button
-            className="btn-primary"
-            onClick={() => {
-              setEditAppt(null);
-              setShowForm(true);
-            }}
-          >
-            + New Appointment
-          </button>
+          <div className="page-header-actions">
+            <button className="btn-danger-ghost" onClick={handleDelete}>
+              🗑 Delete
+            </button>
+            <button
+              className="btn-primary"
+              onClick={() => {
+                setEditAppt(null);
+                setShowForm(true);
+              }}
+            >
+              + New Appointment
+            </button>
+          </div>
         </div>
 
         {/* Patient Info */}
