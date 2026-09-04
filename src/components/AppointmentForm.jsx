@@ -4,6 +4,7 @@ import PatientHistoryPanel from "./PatientHistoryPanel";
 import {
   createAppointment,
   updateAppointment,
+  archiveAppointment,
 } from "../services/clinicService";
 
 const STATUSES = ["Pending", "Confirmed", "Completed", "Cancelled", "No Show"];
@@ -133,6 +134,13 @@ function AppointmentForm({
     } finally {
       setSaving(false);
     }
+  };
+  const handleArchive = async () => {
+    if (!window.confirm("Are you sure you want to archive this completed/canceled appointment? The appointment will remain available in the patient's history.")) return;
+    setSaving(true); setError("");
+    try { await archiveAppointment(existingAppointment._id); onSaved(); }
+    catch (err) { setError(err.response?.data?.message || "Could not archive appointment."); }
+    finally { setSaving(false); }
   };
 
   return (
@@ -346,6 +354,7 @@ function AppointmentForm({
           {error && <div className="form-error">{error}</div>}
 
           <div className="form-actions">
+            {editing && ["Completed", "Canceled", "Cancelled"].includes(existingAppointment.status) && <button type="button" className="btn-danger-ghost" onClick={handleArchive} disabled={saving}>Archive</button>}
             <button type="button" className="btn-secondary" onClick={onClose}>
               Cancel
             </button>

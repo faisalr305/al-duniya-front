@@ -29,6 +29,8 @@ export const getAllAppointments = (params = {}) =>
   api.get("/api/appointments", { params }).then((r) => r.data);
 export const getAppointment = (id) =>
   api.get(`/api/appointments/${id}`).then((r) => r.data);
+export const getPatientAppointments = (patientId) =>
+  api.get(`/api/appointments/patient/${patientId}`).then((r) => r.data);
 export const createAppointment = (data) =>
   api.post("/api/appointments", data).then((r) => r.data);
 export const updateAppointment = (id, data) =>

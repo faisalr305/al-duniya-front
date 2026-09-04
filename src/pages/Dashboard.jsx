@@ -139,7 +139,7 @@ function Dashboard() {
             <div className="section-header">
               <h2 className="section-title">📅 Calendar</h2>
             </div>
-            <ClinicCalendar onDateSelect={handleDateSelect} />
+            <ClinicCalendar onDateSelect={handleDateSelect} onAppointmentSelect={(appt) => { setEditAppt(appt); setShowForm(true); }} />
 
             {/* Day View */}
             {selectedDate && (

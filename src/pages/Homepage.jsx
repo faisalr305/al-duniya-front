@@ -5,7 +5,7 @@ function Homepage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/dashboard', { replace: true });
+    navigate(localStorage.getItem('token') ? '/dashboard' : '/sign-in', { replace: true });
   }, [navigate]);
 
   return null;

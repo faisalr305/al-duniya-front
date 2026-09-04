@@ -1,6 +1,8 @@
 import { formatTime12h } from "../utils/format";
 
 const STATUS_COLORS = {
+  Scheduled: "status-confirmed",
+  Canceled: "status-cancelled",
   Pending: "status-pending",
   Confirmed: "status-confirmed",
   Completed: "status-completed",
@@ -104,10 +106,12 @@ function AppointmentCard({
               onChange={(e) => onStatusChange(appointment._id, e.target.value)}
             >
               {[
+                "Scheduled",
                 "Pending",
                 "Confirmed",
                 "Completed",
                 "Cancelled",
+                "Canceled",
                 "No Show",
               ].map((s) => (
                 <option key={s} value={s}>

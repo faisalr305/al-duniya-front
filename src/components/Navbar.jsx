@@ -1,8 +1,10 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useTheme } from '../context/ThemeContext'
 
 function Navbar() {
   const { theme, toggleTheme } = useTheme()
+  const navigate = useNavigate()
+  const logout = () => { localStorage.removeItem('token'); localStorage.removeItem('user'); navigate('/sign-in') }
 
   return (
     <header className="navbar">
@@ -41,6 +43,7 @@ function Navbar() {
         >
           {theme === "dark" ? "☀️" : "🌙"}
         </button>
+        <button type="button" className="navbar-link" onClick={logout}>Logout</button>
       </div>
     </header>
   )

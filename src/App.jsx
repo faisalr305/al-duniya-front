@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import AppointmentsPage from "./pages/AppointmentsPage";
 import PatientProfilePage from "./pages/PatientProfilePage";
 import PatientsPage from "./pages/PatientsPage";
+import AuthPage from "./pages/AuthPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function KawaiiDecor() {
   return (
@@ -39,14 +41,14 @@ function App() {
   return (
     <>
       <KawaiiDecor />
-      <Navbar />
+      {localStorage.getItem("token") && <Navbar />}
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/appointments" element={<AppointmentsPage />} />
-        <Route path="/patients" element={<PatientsPage />} />
-        <Route path="/patients/:id" element={<PatientProfilePage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/" element={<Homepage />} /><Route path="/sign-in" element={<AuthPage mode="signin" />} /><Route path="/sign-up" element={<AuthPage mode="signup" />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/appointments" element={<ProtectedRoute><AppointmentsPage /></ProtectedRoute>} />
+        <Route path="/patients" element={<ProtectedRoute><PatientsPage /></ProtectedRoute>} />
+        <Route path="/patients/:id" element={<ProtectedRoute><PatientProfilePage /></ProtectedRoute>} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </>
   );

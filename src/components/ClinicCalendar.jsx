@@ -47,7 +47,7 @@ const calendarFormats = {
     `${localizer.format(start, "MMM d")} – ${localizer.format(end, "MMM d, yyyy")}`,
 };
 
-function ClinicCalendar({ onDateSelect }) {
+function ClinicCalendar({ onDateSelect, onAppointmentSelect }) {
   const [events, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -71,8 +71,8 @@ function ClinicCalendar({ onDateSelect }) {
         data.map((a) => ({
           id: a._id,
           title: `${a.patient?.name || "Patient"} – ${a.service}`,
-          start: new Date(a.date),
-          end: new Date(a.date),
+          start: new Date(`${a.date.slice(0, 10)}T${a.time || "00:00"}:00`),
+          end: new Date(`${a.date.slice(0, 10)}T${a.time || "00:00"}:00`),
           resource: a,
         })),
       );
@@ -96,8 +96,8 @@ function ClinicCalendar({ onDateSelect }) {
   };
 
   const handleSelectEvent = (event) => {
-    const dateStr = format(new Date(event.start), "yyyy-MM-dd");
-    onDateSelect(dateStr);
+    if (onAppointmentSelect) onAppointmentSelect(event.resource);
+    else onDateSelect(format(new Date(event.start), "yyyy-MM-dd"));
   };
 
   return (
