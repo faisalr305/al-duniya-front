@@ -1,10 +1,14 @@
 import { Link, useNavigate } from 'react-router'
 import { useTheme } from '../context/ThemeContext'
+import { logout as endApiSession } from '../services/api'
 
 function Navbar() {
   const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
-  const logout = () => { localStorage.removeItem('token'); localStorage.removeItem('user'); navigate('/sign-in') }
+  const logout = async () => {
+    await endApiSession()
+    navigate('/sign-in')
+  }
 
   return (
     <header className="navbar">
